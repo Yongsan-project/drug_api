@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({ // Check required on the client
     id: { type: String, unique: true },
     email: { type: String, unique: true },
     password: { type: String },
@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
     phoneNumber: { type: String, unique: true },
 });
 
-userSchema.pre('save', async function () {
+userSchema.pre('save', async function () { // Before save, password encryption
     if (this.isModified("password"))
         this.password = await bcrypt.hash(this.password, 5);
 })

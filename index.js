@@ -7,21 +7,21 @@ import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
 
 const app = express();
-const PORT = 3000;
+const PORT = 3000; // port
 
 const logger = morgan("dev");
 
-app.use(helmet());
-app.use(bodyParser.json());
+app.use(helmet()); // Use security header module
+app.use(bodyParser.json()); // For get params in the request data
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(logger);
-app.use("/", userRouter);
+app.use("/", userRouter); // Use userRouter
 
-app.listen(PORT, () => {
+app.listen(PORT, () => { // Server open
     console.log(`server is listening at http://localhost:${PORT} 🚀`);
 })
 
