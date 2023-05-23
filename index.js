@@ -5,6 +5,8 @@ import helmet from "helmet"
 import morgan from "morgan";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const app = express();
 const PORT = 3000; // port
@@ -17,6 +19,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({
     extended: false
+}));
+app.use(session({
+    secret: process.env.COOKEY_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL })
 }));
 app.use(logger);
 app.use("/", userRouter); // Use userRouter

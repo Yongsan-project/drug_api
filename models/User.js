@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({ // Check required on the client
     email: { type: String, unique: true },
     password: { type: String },
     name: { type: String },
-    phoneNumber: { type: String, unique: true },
+    phoneNumber: { type: String, unique: true }, // Only number
 });
 
 userSchema.pre('save', async function () { // Before save, password encryption

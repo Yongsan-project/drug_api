@@ -1,5 +1,7 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
+import CryptoJS from "crypto-js";
+import axios from "axios";
 
 export const postJoin = async (req, res) => {
     const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
@@ -30,5 +32,64 @@ export const postLogin = async (req, res) => {
     const confirm = await bcrypt.compare(password, user.password); // confirm password
     if (!confirm) return res.send("Wrong password"); // not match password
 
+    req.session.user = user;
+
     return res.send("success login");
+}
+
+export const sendSMS = async (req, res) => {
+    const {
+        session: {
+            user: { phoneNumber }
+        }
+    } = req;
+    const date = Date.now().toString(); // date(String)
+
+    // environment variable
+    const service_id = process.env.NCP_SERVICE_ID;
+    const access_key = process.env.NCP_API_ACCESS_KEY;
+    const secret_key = process.env.NCP_API_SECRET;
+    const call_number = process.env.CALL_NUMBER;
+
+    // request variable
+    const space = " ";
+    const nl = "\n";
+    const req_url = `https://sens.apigw.ntruss.com/sms/v2/services/${service_id}/messages`;
+    const signature_url = `/sms/v2/services/${service_id}/messages`;
+    const method = "POST";
+
+    // signature
+    const hmac = CryptoJS.algo.HMAC.create(CryptoJS.algo.SHA256, secret_key);
+    hmac.update(method); // method
+    hmac.update(space);
+    hmac.update(signature_url); // url
+    hmac.update(nl);
+    hmac.update(date); // date
+    hmac.update(nl);
+    hmac.update(access_key);
+
+    const hash = hmac.finalize();
+    const signature = hash.toString(CryptoJS.enc.Base64);
+
+    // send request to SENS server
+    const response_sms = await axios({
+        method: method,
+        url: req_url,
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "x-ncp-iam-access-key": access_key,
+            "x-ncp-apigw-timestamp": date,
+            "x-ncp-apigw-signature-v2": signature,
+        },
+        data: {
+            type: "SMS",
+            countryCode: "82",
+            from: call_number,
+            content: "success send sms",
+            messages: [{ to: `${phoneNumber}` }],
+        }
+    })
+
+
+    return res.send(response_sms.data);
 }
