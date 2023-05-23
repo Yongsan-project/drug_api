@@ -33,6 +33,7 @@ export const postLogin = async (req, res) => {
     if (!confirm) return res.send("Wrong password"); // not match password
 
     req.session.user = user;
+    req.session.loggedIn = true;
 
     return res.send("success login");
 }
@@ -92,4 +93,9 @@ export const sendSMS = async (req, res) => {
 
 
     return res.send(response_sms.data);
+}
+
+export const logout = (req, res) => {
+    req.session.destroy();
+    return res.send("logout");
 }
