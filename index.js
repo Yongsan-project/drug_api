@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(session({
-    secret: process.env.COOKEY_SECRET,
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.DB_URL })
