@@ -9,7 +9,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 
 const app = express();
-const PORT = 3000; // port
+const PORT = process.env.PORT; // port
 
 const logger = morgan("dev");
 
