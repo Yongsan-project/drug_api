@@ -4,38 +4,51 @@ import CryptoJS from "crypto-js";
 import axios from "axios";
 
 export const postJoin = async (req, res) => {
-    const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
+    try {
+        const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
 
-    // password is not match
-    if (password != confirmPassword) return res.send("Password confirmation does not match.");
+        // password is not match
+        if (password != confirmPassword) return res.status(401).json("Password confirmation does not match.");
 
-    // find user-id and email in db
-    const userIdExists = await User.exists({ id });
-    const emailExists = await User.exists({ email });
+        // invalid value
+        if (!(id && email && password && name && phoneNumber)) return res.status(401).json("Invalid value");
 
-    if (userIdExists || emailExists) return res.send("name or email is already taken.");
+        // find user-id and email in db
+        const userIdExists = await User.exists({ id });
+        const emailExists = await User.exists({ email });
 
-    // create User data
-    await User.create({
-        id, email, name, password, phoneNumber
-    });
+        if (userIdExists || emailExists) return res.status(401).json("name or email is already taken.");
 
-    // joins succees
-    return res.send("success join");
+        // create User data
+        await User.create({
+            id, email, name, password, phoneNumber
+        });
+
+        // joins succees
+        return res.redirect("/login");
+    } catch (e) {
+        return res.status(500).json(`Server Error : ${e}`);
+    }
 }
 
 export const postLogin = async (req, res) => {
-    const { id, password } = req.body; // get data
-    const user = await User.findOne({ id }); // find user-data in db
-    if (!user) return res.send("An account with this id does not exists"); // no user at db
+    try {
+        const { id, password } = req.body; // get data
+        const user = await User.findOne({ id }); // find user-data in db
+        if (!user) return res.status(401).json("An account with this id does not exists"); // no user at db
 
-    const confirm = await bcrypt.compare(password, user.password); // confirm password
-    if (!confirm) return res.send("Wrong password"); // not match password
+        const confirm = await bcrypt.compare(password, user.password); // confirm password
+        if (!confirm) return res.status(401).json("Wrong password"); // not match password
 
-    req.session.user = user;
-    req.session.loggedIn = true;
+        req.session.user = user;
+        req.session.loggedIn = true;
 
-    return res.send("success login");
+        req.session.save(() => {
+            res.redirect("/");
+        })
+    } catch (e) {
+        return res.status(500).json(`Server Error : ${e}`);
+    }
 }
 
 export const sendSMS = async (req, res) => {
@@ -83,19 +96,19 @@ export const sendSMS = async (req, res) => {
             "x-ncp-apigw-signature-v2": signature,
         },
         data: {
-            type: "SMS",
-            countryCode: "82",
-            from: call_number,
-            content: "success send sms",
-            messages: [{ to: `${phoneNumber}` }],
+            "type": "SMS",
+            "countryCode": "82",
+            "from": call_number,
+            "content": "success send sms",
+            "messages": [{ "to": `${phoneNumber}` }],
         }
     })
 
 
-    return res.send(response_sms.data);
+    return res.status(200).send(response_sms.data);
 }
 
 export const logout = (req, res) => {
     req.session.destroy();
-    return res.send("logout");
+    return res.redirect("/");
 }
