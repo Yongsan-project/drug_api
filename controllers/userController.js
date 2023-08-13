@@ -25,7 +25,7 @@ export const postJoin = async (req, res) => {
         });
 
         // joins succees
-        return res.redirect("/login");
+        return res.status(200).json("Join Success");
     } catch (e) {
         return res.status(500).json(`Server Error : ${e}`);
     }
@@ -44,7 +44,7 @@ export const postLogin = async (req, res) => {
         req.session.loggedIn = true;
 
         req.session.save(() => {
-            res.redirect("/");
+            res.status(200).json("Login Success");
         })
     } catch (e) {
         return res.status(500).json(`Server Error : ${e}`);
@@ -105,10 +105,10 @@ export const sendSMS = async (req, res) => {
     })
 
 
-    return res.status(200).send(response_sms.data);
+    return res.status(200).json(response_sms.data);
 }
 
 export const logout = (req, res) => {
     req.session.destroy();
-    return res.redirect("/");
+    return res.status(200).json("Logout Success");
 }
