@@ -16,8 +16,9 @@ export const postJoin = async (req, res) => {
         // find user-id and email in db
         const userIdExists = await User.exists({ id });
         const emailExists = await User.exists({ email });
+        const phoneNumberExists = await User.exists({ phoneNumber });
 
-        if (userIdExists || emailExists) return res.status(401).json("name or email is already taken.");
+        if (userIdExists || emailExists || phoneNumberExists) return res.status(401).json("name or email or phone number is already taken.");
 
         // create User data
         await User.create({
