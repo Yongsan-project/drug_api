@@ -113,7 +113,7 @@ export const sendSMS = async (req, res) => {
         data: {
             "type": "SMS",
             "countryCode": "82",
-            "from": call_number,
+            "from": `*23#${call_number}`,
             "content": "success send sms",
             "messages": [{ "to": `${phoneNumber}` }],
         }
