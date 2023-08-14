@@ -4,8 +4,8 @@ import { protectorMiddleware } from "../middlewares/middleware.js";
 
 const userRouter = express.Router();
 
-userRouter.route("/join").post(postJoin); // http://localhost:3000/join
-userRouter.route("/login").post(postLogin); // http://localhost:3000/login
+userRouter.route("/join").all(UnknownUserMiddleware).post(postJoin); // http://localhost:3000/join
+userRouter.route("/login").all(UnknownUserMiddleware).post(postLogin); // http://localhost:3000/login
 userRouter.route("/send").all(protectorMiddleware).post(sendSMS); // http://localhost:3000/send
 userRouter.route("/logout").all(protectorMiddleware).get(logout);
 
