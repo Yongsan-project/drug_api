@@ -3,6 +3,10 @@ import bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 import axios from "axios";
 
+export const getHome = async (req, res) => {
+    return res.status(200).json({ "msg": "Allowed user" });
+}
+
 export const postJoin = async (req, res) => {
     try {
         const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
