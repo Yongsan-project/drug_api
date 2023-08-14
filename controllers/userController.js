@@ -7,6 +7,13 @@ export const getHome = async (req, res) => {
     return res.status(200).json({ "msg": "Allowed user" });
 }
 
+export const getLogin = async (req, res) => {
+    return res.status(200).json({ "msg": "Allowed user" });
+}
+export const getJoin = async (req, res) => {
+    return res.status(200).json({ "msg": "Allowed user" });
+}
+
 export const postJoin = async (req, res) => {
     try {
         const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
