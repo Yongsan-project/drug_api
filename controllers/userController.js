@@ -8,7 +8,7 @@ export const postJoin = async (req, res) => {
         const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
 
         // password is not match
-        if (password != confirmPassword) return res.status(401).json("Password confirmation does not match.");
+        if (password !== confirmPassword) return res.status(401).json("Password confirmation does not match.");
 
         // invalid value
         if (!(id && email && password && name && phoneNumber)) return res.status(401).json("Invalid value");
