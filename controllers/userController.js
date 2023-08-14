@@ -56,7 +56,11 @@ export const postLogin = async (req, res) => {
 }
 
 export const sendSMS = async (req, res) => {
-    const { phoneNumber } = req.body;
+    const {
+        session: {
+            user: { phoneNumber }
+        }
+    } = req;
     const date = Date.now().toString(); // date(String)
 
     // environment variable
