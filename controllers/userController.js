@@ -48,7 +48,7 @@ export const postLogin = async (req, res) => {
         req.session.loggedIn = true;
 
         req.session.save(() => {
-            res.status(200).json("Login Success");
+            res.status(200).json({ "msg": "Login Success", "userId": id });
         })
     } catch (e) {
         return res.status(500).json(`Server Error : ${e}`);
