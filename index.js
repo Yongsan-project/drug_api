@@ -24,7 +24,10 @@ app.use(session({
     secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.DB_URL })
+    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+    cookie: {
+        maxAge: 86400000
+    }
 }));
 app.use(logger);
 app.use("/", userRouter); // Use userRouter
