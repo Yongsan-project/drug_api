@@ -1,6 +1,6 @@
 import express from "express"
 import { logout, postJoin, postLogin, sendSMS } from "../controllers/userController.js";
-import { protectorMiddleware } from "../middlewares/middleware.js";
+import { protectorMiddleware, UnknownUserMiddleware } from "../middlewares/middleware.js";
 
 const userRouter = express.Router();
 
