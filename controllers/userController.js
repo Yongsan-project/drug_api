@@ -4,7 +4,15 @@ import CryptoJS from "crypto-js";
 import axios from "axios";
 
 export const getHome = async (req, res) => {
-    return res.status(200).json({ "msg": "Allowed user" });
+    const {
+        session: {
+            user: { id }
+        }
+    } = req;
+
+    const user = await User.findOne({ id });
+
+    return res.status(200).json({ "msg": "Allowed user", "user": user.id });
 }
 
 export const getLogin = async (req, res) => {
