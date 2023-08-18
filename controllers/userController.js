@@ -79,7 +79,6 @@ export const sendSMS = async (req, res) => {
         phoneNumber
     } = req.body;
     const date = Date.now().toString(); // date(String)
-    console.log(req.body);
 
     // environment variable
     const service_id = process.env.NCP_SERVICE_ID;
@@ -127,7 +126,7 @@ export const sendSMS = async (req, res) => {
     // })
 
 
-    return res.status(200).json(response_sms.data);
+    return res.status(200).json("response_sms.data");
 }
 
 export const logout = (req, res) => {
