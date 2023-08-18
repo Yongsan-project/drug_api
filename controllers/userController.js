@@ -79,6 +79,7 @@ export const sendSMS = async (req, res) => {
         phoneNumber
     } = req.body;
     const date = Date.now().toString(); // date(String)
+    console.log(req.body);
 
     // environment variable
     const service_id = process.env.NCP_SERVICE_ID;
@@ -107,23 +108,23 @@ export const sendSMS = async (req, res) => {
     const signature = hash.toString(CryptoJS.enc.Base64);
 
     // send request to SENS server
-    const response_sms = await axios({
-        method: method,
-        url: req_url,
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "x-ncp-iam-access-key": access_key,
-            "x-ncp-apigw-timestamp": date,
-            "x-ncp-apigw-signature-v2": signature,
-        },
-        data: {
-            "type": "SMS",
-            "countryCode": "82",
-            "from": call_number,
-            "content": "success send sms",
-            "messages": [{ "to": `${phoneNumber}` }],
-        }
-    })
+    // const response_sms = await axios({
+    //     method: method,
+    //     url: req_url,
+    //     headers: {
+    //         "Content-Type": "application/json; charset=utf-8",
+    //         "x-ncp-iam-access-key": access_key,
+    //         "x-ncp-apigw-timestamp": date,
+    //         "x-ncp-apigw-signature-v2": signature,
+    //     },
+    //     data: {
+    //         "type": "SMS",
+    //         "countryCode": "82",
+    //         "from": call_number,
+    //         "content": "success send sms",
+    //         "messages": [{ "to": `${phoneNumber}` }],
+    //     }
+    // })
 
 
     return res.status(200).json(response_sms.data);
