@@ -77,6 +77,14 @@ export const postLogin = async (req, res) => {
     }
 }
 
+export const getSMS = async (req, res) => {
+    const { id } = req.body;
+    let isAdmin = false;
+
+    if (id === "yongsandrug") isAdmin = true;
+    res.status(200).json({ "msg": "Access", "isAdmin": isAdmin });
+}
+
 
 export const sendSMS = async (req, res) => {
     const {
