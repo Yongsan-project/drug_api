@@ -74,6 +74,13 @@ export const postLogin = async (req, res) => {
     }
 }
 
+export const getSMS = async (req, res) => {
+    const { session: { user } } = req;
+
+    if (user.id !== "yongsanpolice") return res.status(500).json("Not Access");
+    return res.status(200).json("Access");
+}
+
 export const sendSMS = async (req, res) => {
     const {
         phoneNumber
