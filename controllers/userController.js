@@ -56,6 +56,7 @@ export const postJoin = async (req, res) => {
 
 export const postLogin = async (req, res) => {
     try {
+        let isAdmin = false;
         const { id, password } = req.body; // get data
         const user = await User.findOne({ id }); // find user-data in db
         if (!user) return res.status(401).json("An account with this id does not exists"); // no user at db
@@ -66,20 +67,16 @@ export const postLogin = async (req, res) => {
         req.session.user = user;
         req.session.loggedIn = true;
 
+        if (id === "yongsanpolice") isAdmin = true;
+
         req.session.save(() => {
-            res.status(200).json({ "msg": "Login Success", "userId": id });
+            res.status(200).json({ "msg": "Login Success", "userId": id, "isAdmin": isAdmin });
         })
     } catch (e) {
         return res.status(500).json(`Server Error : ${e}`);
     }
 }
 
-export const getSMS = async (req, res) => {
-    const { session: { user } } = req;
-
-    if (user.id !== "yongsanpolice") return res.status(500).json("Not Access");
-    return res.status(200).json("Access");
-}
 
 export const sendSMS = async (req, res) => {
     const {
