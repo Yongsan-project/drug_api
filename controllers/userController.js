@@ -67,7 +67,7 @@ export const postLogin = async (req, res) => {
         req.session.user = user;
         req.session.loggedIn = true;
 
-        if (id === "yongsanpolice") isAdmin = true;
+        if (id === "yongsandrug") isAdmin = true;
 
         req.session.save(() => {
             res.status(200).json({ "msg": "Login Success", "userId": id, "isAdmin": isAdmin });
