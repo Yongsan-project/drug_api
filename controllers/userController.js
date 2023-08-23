@@ -79,6 +79,7 @@ export const postLogin = async (req, res) => {
 
 export const getSMS = async (req, res) => {
     const { id } = req.body;
+    console.log(req.body);
     let isAdmin = false;
 
     if (id === "yongsandrug") isAdmin = true;
