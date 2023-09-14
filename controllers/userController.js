@@ -24,27 +24,23 @@ export const getJoin = async (req, res) => {
 
 export const postJoin = async (req, res) => {
     try {
-        const { id, email, password, name, confirmPassword, phoneNumber } = req.body; // get data
+        const { id, password, confirmPassword, } = req.body; // get data
 
         // password is not match
         if (password !== confirmPassword) return res.status(401).json("Password confirmation does not match.");
 
         // invalid value
-        if (!(id && email && password && name && phoneNumber)) return res.status(401).json("Invalid value");
+        if (!(id && password)) return res.status(401).json("Invalid value");
 
         // find user-id and email in db
         const userIdExists = await User.exists({ id });
-        const emailExists = await User.exists({ email });
-        const phoneNumberExists = await User.exists({ phoneNumber });
 
         if (userIdExists) return res.status(401).json("user id is already taken.")
-        if (emailExists) return res.status(401).json("email is already taken.")
-        if (phoneNumberExists) return res.status(401).json("phone number is already taken.")
 
 
         // create User data
         await User.create({
-            id, email, name, password, phoneNumber
+            id, password
         });
 
         // joins succees

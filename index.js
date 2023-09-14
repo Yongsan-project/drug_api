@@ -32,6 +32,10 @@ app.use(session({
 app.use(logger);
 app.use("/", userRouter); // Use userRouter
 
+app.on('error', (error) => {
+    console.log(error);
+})
+
 app.listen(PORT, () => { // Server open
     console.log(`server is listening at http://localhost:${PORT} 🚀`);
 })
