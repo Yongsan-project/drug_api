@@ -30,6 +30,8 @@ app.use(session({
     }
 }));
 app.use(logger);
+app.on("error", (err) => console.log(`Server error : ${err.message}`);
+
 app.use("/", userRouter); // Use userRouter
 
 app.listen(PORT, () => { // Server open
