@@ -34,10 +34,6 @@ app.on("error", (err) => console.log(`Server error : ${err.message}`));
 
 app.use("/", userRouter); // Use userRouter
 
-app.on('error', (error) => {
-    console.log(error);
-})
-
 app.listen(PORT, () => { // Server open
     console.log(`server is listening at http://localhost:${PORT} 🚀`);
 })
