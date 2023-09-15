@@ -6,6 +6,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
 import session from "express-session";
+import cors from "cors";
 import MongoStore from "connect-mongo";
 
 const app = express();
@@ -13,6 +14,9 @@ const PORT = process.env.PORT; // port
 
 const logger = morgan("dev");
 
+app.use(cors({
+    origin: 'https://www.yongsandrug.co.kr/'
+}));
 app.use(helmet()); // Use security header module
 app.use(bodyParser.json()); // For get params in the request data
 app.use(express.json());
