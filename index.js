@@ -15,7 +15,8 @@ const PORT = process.env.PORT; // port
 const logger = morgan("dev");
 
 app.use(cors({
-    origin: 'https://www.yongsandrug.co.kr/'
+    origin: 'https://www.yongsandrug.co.kr/',
+    credentials: true
 }));
 app.use(helmet()); // Use security header module
 app.use(bodyParser.json()); // For get params in the request data
