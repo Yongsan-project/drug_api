@@ -12,7 +12,9 @@ export const getHome = async (req, res) => {
 
     const user = await User.findOne({ id });
 
-    return res.status(200).json({ "msg": "Allowed user", "user": user.id });
+    if (user)
+        return res.status(200).json({ "msg": "Allowed user", "user": user.id });
+    else return res.status(400).json({ 'msg': "Not Allowed" });
 }
 
 export const getLogin = async (req, res) => {
