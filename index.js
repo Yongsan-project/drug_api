@@ -6,7 +6,6 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
 import session from "express-session";
-// import cors from "cors";
 import cors from "cors";
 import MongoStore from "connect-mongo";
 
@@ -16,19 +15,19 @@ const PORT = process.env.PORT; // port
 const logger = morgan("dev");
 
 // // cors
-// app.use(cors({
-//     origin: '*',
-//     credentials: true
-// }));
+app.use(cors({
+    origin: 'https://www.yongsandrug.co.kr',
+    credentials: true
+}));
 
-app.all('/*', function (req, res, next) {
-    res.setHeader("Access-Control-Allow-Origin", "https://www.yongsandrug.co.kr/");
-    res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers',
-        'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    next();
-});
+// app.all('/*', function (req, res, next) {
+//     res.setHeader("Access-Control-Allow-Origin", "https://www.yongsandrug.co.kr/");
+//     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+//     res.setHeader('Access-Control-Allow-Headers',
+//         'Content-Type, Authorization, Content-Length, X-Requested-With');
+//     res.setHeader('Access-Control-Allow-Credentials', 'true');
+//     next();
+// });
 
 app.use(helmet()); // Use security header module
 app.use(bodyParser.json()); // For get params in the request data
