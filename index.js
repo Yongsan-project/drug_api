@@ -6,6 +6,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import userRouter from "./routers/userRouter.js";
 import session from "express-session";
+// import cors from "cors";
 import cors from "cors";
 import MongoStore from "connect-mongo";
 
@@ -14,18 +15,18 @@ const PORT = process.env.PORT; // port
 
 const logger = morgan("dev");
 
-// cors
-app.use(cors({
-    origin: '*',
-    credentials: true
-}));
+// // cors
+// app.use(cors({
+//     origin: '*',
+//     credentials: true
+// }));
 
 app.all('/*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "https://www.yongsandrug.co.kr/");
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers',
         'Content-Type, Authorization, Content-Length, X-Requested-With');
-    res.header('Access-Control-Allow-Credentials', 'true'); 
+    res.header('Access-Control-Allow-Credentials', 'true');
     next();
 });
 
