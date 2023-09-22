@@ -4,18 +4,21 @@ import CryptoJS from "crypto-js";
 import axios from "axios";
 
 export const getHome = async (req, res) => {
-    console.log(req.session);
-    const {
-        session: {
-            user: { id }
-        }
-    } = req;
+    // 세션이 있다면 로그인된 것
+    if (req.session)
+        return res.status(200).json({ "msg": "Allowed user", });
+    // console.log(req.session);
+    // const {
+    //     session: {
+    //         user: { id }
+    //     }
+    // } = req;
 
-    const user = await User.findOne({ id });
+    // const user = await User.findOne({ id });
 
-    if (user)
-        return res.status(200).json({ "msg": "Allowed user", "user": user.id });
-    else return res.status(400).json({ 'msg': "Not Allowed" });
+    // if (user)
+    //     return res.status(200).json({ "msg": "Allowed user", "user": user.id });
+    // else return res.status(400).json({ 'msg': "Not Allowed" });
 }
 
 export const getLogin = async (req, res) => {
