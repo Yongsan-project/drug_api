@@ -4,6 +4,7 @@ import CryptoJS from "crypto-js";
 import axios from "axios";
 
 export const getHome = async (req, res) => {
+    console.log(req.session);
     const {
         session: {
             user: { id }
