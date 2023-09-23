@@ -17,7 +17,7 @@ const logger = morgan("dev");
 
 // // cors
 app.use(cors({
-    origin: 'https://drug-prevention-git-edit-balhyo-younjisang.vercel.app/',
+    origin: 'https://drug-prevention-km3y0tn06-balhyo-younjisang.vercel.app/',
     credentials: true
 }));
 
