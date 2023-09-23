@@ -29,6 +29,7 @@ export const getJoin = async (req, res) => {
 }
 
 export const postJoin = async (req, res) => {
+    console.log(req.session);
     try {
         const { id, password, confirmPassword, } = req.body; // get data
 
