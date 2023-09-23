@@ -6,9 +6,7 @@ import morgan from "morgan";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import userRouter from "./routers/userRouter.js";
-import session from "express-session";
 import cors from "cors";
-import MongoStore from "connect-mongo";
 
 const app = express();
 const PORT = process.env.PORT; // port
@@ -17,18 +15,10 @@ const logger = morgan("dev");
 
 // // cors
 app.use(cors({
-    origin: 'https://drug-prevention-km3y0tn06-balhyo-younjisang.vercel.app/',
+    origin: 'http://localhost:3000',
     credentials: true
 }));
 
-// app.all('/*', function (req, res, next) {
-//     res.setHeader("Access-Control-Allow-Origin", "https://www.yongsandrug.co.kr/");
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers',
-//         'Content-Type, Authorization, Content-Length, X-Requested-With');
-//     res.setHeader('Access-Control-Allow-Credentials', 'true');
-//     next();
-// });
 
 app.use(helmet()); // Use security header module
 app.use(cookieParser());
@@ -38,16 +28,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-app.use(session({
-    secret: process.env.COOKIE_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
-    cookie: {
-        httpOnly: false,
-        maxAge: 86400000
-    }
-}));
+// app.use(session({
+//     secret: process.env.COOKIE_SECRET,
+//     resave: false,
+//     saveUninitialized: true,
+//     store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
+//     cookie: {
+//         httpOnly: false,
+//         maxAge: 86400000
+//     }
+// }));
 app.use(logger);
 app.on("error", (err) => console.log(`Server error : ${err.message}`));
 

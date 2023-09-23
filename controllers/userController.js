@@ -2,33 +2,30 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 import axios from "axios";
-import Session from "../models/Session.js";
+import jwt from "jsonwebtoken";
 
 export const getHome = async (req, res) => {
-    const _id = req.sessionID;
-    console.log(_id);
-    console.log(req.cookies['connect.sid']);
-    // const user = await Session.find();
-    // console.log(user);
-    // console.log(req.session);
-    // const {
-    //     session: {
-    //         user: { id }
-    //     }
-    // } = req;
+    const { userData: { user: { id } } } = req;
+    const user = await User.findOne({ _id: id });
 
-    // const user = await User.findOne({ id });
-
-    // if (user)
-    //     return res.status(200).json({ "msg": "Allowed user", "user": user.id });
-    // else return res.status(400).json({ 'msg': "Not Allowed" });
+    if (user) return res.status(200).json({ "msg": "Already Logged In", "user": user.id });
+    return res.status(401).json({ "msg": "Not Allowed", });
 }
 
 export const getLogin = async (req, res) => {
-    return res.status(200).json({ "msg": "Allowed user" });
+    const { userData: { user: { id } } } = req;
+    const user = await User.findOne({ _id: id });
+
+    if (user) return res.status(401).json({ "msg": "Already Logged In", "user": user.id });
+    return res.status(200).json({ "msg": "Allowed" });
 }
+
 export const getJoin = async (req, res) => {
-    return res.status(200).json({ "msg": "Allowed user" });
+    const { userData: { user: { id } } } = req;
+    const user = await User.findOne({ _id: id });
+
+    if (user) return res.status(401).json({ "msg": "Already Logged In", "user": user.id });
+    return res.status(200).json({ "msg": "Allowed" });
 }
 
 export const postJoin = async (req, res) => {
@@ -69,14 +66,19 @@ export const postLogin = async (req, res) => {
         const confirm = await bcrypt.compare(password, user.password); // confirm password
         if (!confirm) return res.status(401).json("Wrong password"); // not match password
 
-        req.session.user = user;
-        req.session.loggedIn = true;
-
         if (id === "yongsandrug") isAdmin = true;
 
-        req.session.save(() => {
-            res.status(200).json({ "msg": "Login Success", "userId": id, "isAdmin": isAdmin });
+        const payload = {
+            user: {
+                id: user._id
+            }
+        };
+
+        jwt.sign(payload, process.env.COOKIE_SECRET, { expiresIn: "3h" }, (err, token) => {
+            if (err) throw err;
+            res.status(200).send({ token, isAdmin, userId: id });
         })
+
     } catch (e) {
         return res.status(500).json(`Server Error : ${e}`);
     }
@@ -148,6 +150,12 @@ export const sendSMS = async (req, res) => {
 }
 
 export const logout = (req, res) => {
-    req.session.destroy();
+    res.clearCookie('access_jwt', {
+        domain: 'localhost',
+        path: '/',
+        sameSite: 'none',
+        httpOnly: true,
+        secure: true,
+    })
     return res.status(200).json("Logout Success");
 }
