@@ -2,11 +2,14 @@ import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 import axios from "axios";
+import Session from "../models/Session.js";
 
 export const getHome = async (req, res) => {
-    // 세션이 있다면 로그인된 것
-    if (req.session)
-        return res.status(200).json({ "msg": "Allowed user", });
+    const _id = req.sessionID;
+    console.log(_id);
+    console.log(req.cookies['connect.sid']);
+    // const user = await Session.find();
+    // console.log(user);
     // console.log(req.session);
     // const {
     //     session: {
@@ -29,7 +32,6 @@ export const getJoin = async (req, res) => {
 }
 
 export const postJoin = async (req, res) => {
-    console.log(req.session);
     try {
         const { id, password, confirmPassword, } = req.body; // get data
 

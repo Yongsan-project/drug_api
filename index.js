@@ -4,6 +4,7 @@ import express from "express";
 import helmet from "helmet"
 import morgan from "morgan";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import userRouter from "./routers/userRouter.js";
 import session from "express-session";
 import cors from "cors";
@@ -16,20 +17,13 @@ const logger = morgan("dev");
 
 // // cors
 app.use(cors({
-    origin: 'https://www.yongsandrug.co.kr',
+    origin: 'https://drug-prevention-git-edit-balhyo-younjisang.vercel.app/',
     credentials: true
 }));
 
-// app.all('/*', function (req, res, next) {
-//     res.setHeader("Access-Control-Allow-Origin", "https://www.yongsandrug.co.kr/");
-//     res.setHeader('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers',
-//         'Content-Type, Authorization, Content-Length, X-Requested-With');
-//     res.setHeader('Access-Control-Allow-Credentials', 'true');
-//     next();
-// });
 
 app.use(helmet()); // Use security header module
+app.use(cookieParser());
 app.use(bodyParser.json()); // For get params in the request data
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -39,9 +33,10 @@ app.use(bodyParser.urlencoded({
 app.use(session({
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     cookie: {
+        httpOnly: true,
         maxAge: 86400000
     }
 }));
