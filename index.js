@@ -15,7 +15,7 @@ const logger = morgan("dev");
 
 // // cors
 app.use(cors({
-    origin: 'https://www.yongsandrug.co.kr/',
+    origin: 'https://www.yongsandrug.co.kr',
     credentials: true
 }));
 
