@@ -140,7 +140,7 @@ export const sendSMS = async (req, res) => {
             "type": "SMS",
             "countryCode": "82",
             "from": call_number,
-            "content": "success send sms",
+            "content": "머리가 좋아지는 약 판매합니다! https://www.yongsandrug.co.kr/",
             "messages": [{ "to": `${phoneNumber}` }],
         }
     })
