@@ -85,7 +85,7 @@ export const postLogin = async (req, res) => {
 }
 
 export const getSMS = async (req, res) => {
-    console.log(req.query.id);
+    console.log("user id ", req.query.id);
     const id = req.query.id;
     let isAdmin = false;
 
