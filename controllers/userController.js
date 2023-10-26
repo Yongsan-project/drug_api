@@ -1,4 +1,5 @@
 import User from "../models/User.js";
+import Counter from "../models/Counter.js";
 import bcrypt from "bcrypt";
 import CryptoJS from "crypto-js";
 import axios from "axios";
@@ -87,9 +88,16 @@ export const postLogin = async (req, res) => {
 export const getSMS = async (req, res) => {
     const id = req.query.id;
     let isAdmin = false;
+    let total = 0, today = 0;
+
+    Counter.findOne({ name: "visitors" }, (err, counter) => {
+        if (err) return console.log("getSMS Error");
+        total = counter.totalCount;
+        today = counter.todayCount;
+    })
 
     if (id === "yongsandrug") isAdmin = true;
-    res.status(200).json({ "msg": "Access", "isAdmin": isAdmin });
+    res.status(200).json({ "msg": "Access", "isAdmin": isAdmin, "totalCount": total, "todayCount": today });
 }
 
 
