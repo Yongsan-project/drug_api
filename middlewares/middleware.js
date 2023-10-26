@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import Counter from "../models/Counter";
+import Counter from "../models/Counter.js";
 
 export const authMiddleware = (req, res, next) => {
     const token = req.headers['x-access-token'];
