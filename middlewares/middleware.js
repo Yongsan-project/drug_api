@@ -6,8 +6,7 @@ export const authMiddleware = (req, res, next) => {
 
     const currentDate = new Date();
     const now = `${currentDate.getFullYear()}/${currentDate.getMonth()}/${currentDate.getDay()}`;
-    Counter.findOne({ name: "visitors" }, (err, counter) => {
-        if (err) return next();
+    Counter.findOne({ name: "visitors" }).then((counter) => {
         if (counter === null) Counter.create({ name: "visitors", totalCount: 1, todayCount: 1, date: now });
         else {
             counter.totalCount++;
@@ -19,6 +18,8 @@ export const authMiddleware = (req, res, next) => {
             }
             counter.save();
         }
+    }).catch(err => {
+        return res.status(500).json({"msg" : "MiddlewareERROR"})
     })
 
 

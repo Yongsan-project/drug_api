@@ -90,11 +90,12 @@ export const getSMS = async (req, res) => {
     let isAdmin = false;
     let total = 0, today = 0;
 
-    Counter.findOne({ name: "visitors" }, (err, counter) => {
-        if (err) return console.log("getSMS Error");
+    Counter.findOne({ name: "visitors" }).then((counter) => {
+        if(!counter) return res.status(500).json({"msg" : "getSMS ERROR"});
+        
         total = counter.totalCount;
         today = counter.todayCount;
-    })
+    }).catch((err) => res.status(500).json({"msg" : "getSMS ERROR"}))
 
     if (id === "yongsandrug") isAdmin = true;
     res.status(200).json({ "msg": "Access", "isAdmin": isAdmin, "totalCount": total, "todayCount": today });
